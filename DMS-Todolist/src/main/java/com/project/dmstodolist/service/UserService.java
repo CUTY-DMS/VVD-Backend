@@ -9,7 +9,7 @@ import com.project.dmstodolist.controller.dto.response.UserResponse;
 import com.project.dmstodolist.exception.InvalidPasswordException;
 import com.project.dmstodolist.exception.USER_ALREADY_EXISTSException;
 import com.project.dmstodolist.exception.UserNotFoundException;
-import com.project.dmstodolist.jwt.JwtTokenProvider;
+import com.project.dmstodolist.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final JwtTokenProvider jwtTokenProvider;
-    @Transactional
+
+
+   //회원 가입
     public UserResponse join(UserSignUpDto userSignUpDto) {
         if(userRepository.existsByAccountId(userSignUpDto.getAccountId())) {
             throw new USER_ALREADY_EXISTSException();
@@ -36,7 +38,6 @@ public class UserService {
                 .password(passwordEncoder.encode(userSignUpDto.getPassword()))
                 .name(userSignUpDto.getName())
                 .age(userSignUpDto.getAge())
-                .roles(Collections.singletonList("ROLE_USER"))
                 .build());
         return UserResponse.builder()
                 .message("회원가입 성공")
@@ -53,7 +54,7 @@ public class UserService {
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword()))
             throw new InvalidPasswordException();
 
-        String accessToken = jwtTokenProvider.createToken(user.getAccountId(), user.getRoles());
+        String accessToken = jwtTokenProvider.createToken(user.getAccountId());
 
         return TokenResponse.builder()
                 .message("로그인 성공")
@@ -61,5 +62,5 @@ public class UserService {
                 .build();
     }
 
-    
+
 }

@@ -1,4 +1,4 @@
-package com.project.dmstodolist.jwt;
+package com.project.dmstodolist.security;
 
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -24,20 +24,16 @@ public class JwtTokenProvider {
 
     private long tokenValidTime = 30 * 60 * 1000L;
 
-
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
 
-    public String createToken(String userPk, List<String>roles) {
-        Claims claims = Jwts.claims().setSubject(userPk);
-        claims.put("roles", roles);
-        Date now = new Date();
+    public String createToken(String accountId) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + tokenValidTime))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1800000))
+                .setSubject(accountId)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }

@@ -1,7 +1,7 @@
 package com.project.dmstodolist.config;
 
-import com.project.dmstodolist.jwt.JwtAuthenticationFilter;
-import com.project.dmstodolist.jwt.JwtTokenProvider;
+import com.project.dmstodolist.security.JwtAuthenticationFilter;
+import com.project.dmstodolist.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),

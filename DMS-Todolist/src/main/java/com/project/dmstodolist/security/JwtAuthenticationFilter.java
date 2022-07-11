@@ -1,4 +1,4 @@
-package com.project.dmstodolist.jwt;
+package com.project.dmstodolist.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

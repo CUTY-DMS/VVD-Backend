@@ -4,9 +4,10 @@ import com.project.dmstodolist.controller.dto.request.UserSignInDto;
 import com.project.dmstodolist.controller.dto.request.UserSignUpDto;
 import com.project.dmstodolist.controller.dto.response.TokenResponse;
 import com.project.dmstodolist.controller.dto.response.UserResponse;
-import com.project.dmstodolist.jwt.JwtTokenProvider;
+import com.project.dmstodolist.security.JwtTokenProvider;
 import com.project.dmstodolist.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ public class UserController {
 
 
     @PostMapping("/signup")
+    @ResponseStatus(HttpStatus.CREATED)
     public UserResponse signup(@Valid @RequestBody UserSignUpDto userSignUpDto) {
         return userService.join(userSignUpDto);
     }
