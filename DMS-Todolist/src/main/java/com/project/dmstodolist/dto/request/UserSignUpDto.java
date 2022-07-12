@@ -1,4 +1,4 @@
-package com.project.dmstodolist.controller.dto.request;
+package com.project.dmstodolist.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

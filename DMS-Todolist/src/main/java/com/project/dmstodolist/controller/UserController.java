@@ -1,9 +1,9 @@
 package com.project.dmstodolist.controller;
 
-import com.project.dmstodolist.controller.dto.request.UserSignInDto;
-import com.project.dmstodolist.controller.dto.request.UserSignUpDto;
-import com.project.dmstodolist.controller.dto.response.TokenResponse;
-import com.project.dmstodolist.controller.dto.response.UserResponse;
+import com.project.dmstodolist.dto.request.UserSignInDto;
+import com.project.dmstodolist.dto.request.UserSignUpDto;
+import com.project.dmstodolist.dto.response.TokenResponse;
+import com.project.dmstodolist.dto.response.UserResponse;
 import com.project.dmstodolist.security.JwtTokenProvider;
 import com.project.dmstodolist.service.UserService;
 import lombok.RequiredArgsConstructor;

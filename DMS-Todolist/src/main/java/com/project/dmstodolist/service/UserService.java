@@ -1,11 +1,11 @@
 package com.project.dmstodolist.service;
 
-import com.project.dmstodolist.controller.dto.request.UserSignInDto;
-import com.project.dmstodolist.controller.dto.response.TokenResponse;
+import com.project.dmstodolist.dto.request.UserSignInDto;
+import com.project.dmstodolist.dto.response.TokenResponse;
 import com.project.dmstodolist.domain.user.User;
 import com.project.dmstodolist.domain.user.UserRepository;
-import com.project.dmstodolist.controller.dto.request.UserSignUpDto;
-import com.project.dmstodolist.controller.dto.response.UserResponse;
+import com.project.dmstodolist.dto.request.UserSignUpDto;
+import com.project.dmstodolist.dto.response.UserResponse;
 import com.project.dmstodolist.exception.InvalidPasswordException;
 import com.project.dmstodolist.exception.USER_ALREADY_EXISTSException;
 import com.project.dmstodolist.exception.UserNotFoundException;
@@ -13,9 +13,8 @@ import com.project.dmstodolist.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -28,7 +27,8 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-   //회원 가입
+
+    @Transactional
     public UserResponse join(UserSignUpDto userSignUpDto) {
         if(userRepository.existsByAccountId(userSignUpDto.getAccountId())) {
             throw new USER_ALREADY_EXISTSException();
@@ -40,8 +40,7 @@ public class UserService {
                 .age(userSignUpDto.getAge())
                 .build());
         return UserResponse.builder()
-                .message("회원가입 성공")
-                .name(userSignUpDto.getName())
+                .message(userSignUpDto.getName() + "님 회원가입 성공")
                 .build();
     }
 

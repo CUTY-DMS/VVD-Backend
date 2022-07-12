@@ -1,15 +1,17 @@
-package com.project.dmstodolist.controller.dto.response;
+package com.project.dmstodolist.dto.response;
+
 
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
 @Getter
+@Builder
 @AllArgsConstructor
-public class UserResponse {
+public class TokenResponse {
+
     private String message;
 
-    private String name;
+    private String accessToken;
 }
