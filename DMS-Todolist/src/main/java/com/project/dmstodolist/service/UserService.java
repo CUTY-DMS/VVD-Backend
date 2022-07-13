@@ -1,9 +1,10 @@
 package com.project.dmstodolist.service;
 
+import com.project.dmstodolist.entity.user.Role;
 import com.project.dmstodolist.dto.request.UserSignInDto;
 import com.project.dmstodolist.dto.response.TokenResponse;
-import com.project.dmstodolist.domain.user.User;
-import com.project.dmstodolist.domain.user.UserRepository;
+import com.project.dmstodolist.entity.user.User;
+import com.project.dmstodolist.entity.user.UserRepository;
 import com.project.dmstodolist.dto.request.UserSignUpDto;
 import com.project.dmstodolist.dto.response.UserResponse;
 import com.project.dmstodolist.exception.InvalidPasswordException;
@@ -21,11 +22,8 @@ import javax.transaction.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final JwtTokenProvider jwtTokenProvider;
-
 
 
     @Transactional
@@ -38,7 +36,9 @@ public class UserService {
                 .password(passwordEncoder.encode(userSignUpDto.getPassword()))
                 .name(userSignUpDto.getName())
                 .age(userSignUpDto.getAge())
+                .role(Role.ROLE_USER)
                 .build());
+
         return UserResponse.builder()
                 .message(userSignUpDto.getName() + "님 회원가입 성공")
                 .build();

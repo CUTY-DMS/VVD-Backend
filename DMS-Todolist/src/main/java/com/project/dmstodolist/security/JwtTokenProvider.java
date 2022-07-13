@@ -20,7 +20,7 @@ public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
 
-    private String secretKey = "webfirewood";
+    private String secretKey = "token";
 
     private long tokenValidTime = 30 * 60 * 1000L;
 

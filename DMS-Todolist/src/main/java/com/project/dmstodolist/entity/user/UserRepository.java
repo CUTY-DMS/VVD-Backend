@@ -1,4 +1,4 @@
-package com.project.dmstodolist.domain.user;
+package com.project.dmstodolist.entity.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

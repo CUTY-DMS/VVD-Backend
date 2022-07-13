@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -21,4 +22,5 @@ public class CreateTodoRequestDto {
     @NotNull
     @Size(min = 1, max = 100, message = "내용은 1이상 100이하")
     private String content;
+
 }

@@ -22,11 +22,13 @@ public class TodolistController {
         return todoService.createTodo(createTodoRequestDto);
     }
 
-
-    @GetMapping("/search/{id}")
-    public void getTodoList(@PathVariable Long id) {
+/*
+    @PutMapping ("/search/{id}")
+    public void getTodoList(@PathVariable Long id, ) {
 
     }
+
+ */
 
 
 

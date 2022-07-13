@@ -1,6 +1,6 @@
 package com.project.dmstodolist.security.auth;
 
-import com.project.dmstodolist.domain.user.UserRepository;
+import com.project.dmstodolist.entity.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
