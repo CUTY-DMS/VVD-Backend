@@ -31,7 +31,7 @@ public class TodoService {
                 .build());
 
         return CreateTodoResponseDto.builder()
-                .message(createTodoRequestDto.getTitle() + " 등록 완료")
+                .message("TodoList : " + createTodoRequestDto.getTitle() + "을(를) 등록했습니다.")
                 .build();
     }
 
