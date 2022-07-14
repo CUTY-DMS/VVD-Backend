@@ -18,15 +18,16 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
-    private final UserFacade userFacade;
+
 
     @Transactional
     public CreateTodoResponseDto createTodo(CreateTodoRequestDto createTodoRequestDto) {
+
         todoRepository.save(Todo.builder()
                 .title(createTodoRequestDto.getTitle())
                 .content(createTodoRequestDto.getContent())
-                .currentTime(LocalDateTime.now())
-                .user(userFacade.getUserId())
+                .dateTime(LocalDateTime.now())
+                .user(UserFacade.getUser())
                 .build());
 
         return CreateTodoResponseDto.builder()
