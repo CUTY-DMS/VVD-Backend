@@ -3,7 +3,6 @@ package com.project.dmstodolist.service;
 import com.project.dmstodolist.dto.request.UpdateTodoRequest;
 import com.project.dmstodolist.entity.todolist.Todo;
 import com.project.dmstodolist.entity.todolist.TodoRepository;
-import com.project.dmstodolist.entity.user.User;
 import com.project.dmstodolist.entity.user.UserRepository;
 import com.project.dmstodolist.dto.request.CreateTodoRequestDto;
 import com.project.dmstodolist.dto.response.TodoResponseDto;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -59,6 +57,22 @@ public class TodoService {
 
         return TodoResponseDto.builder()
                 .message("TodoList : " + request.getTitle() + "을(를) 수정했습니다.")
+                .build();
+    }
+
+    public TodoResponseDto deleteTodo(Long id) {
+
+        Todo todo = todoRepository.findById(id)
+                .orElseThrow(TodoListNotFoundException::new);
+
+        if(todo.getUser() != UserFacade.getUser()) {
+            throw new ForbiddenException();
+        }
+
+        todoRepository.delete(todo);
+
+        return TodoResponseDto.builder()
+                .message("TodoList : " + todo.getTitle() + "을(를) 삭제했습니다.")
                 .build();
     }
 

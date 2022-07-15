@@ -23,10 +23,14 @@ public class TodolistController {
         return todoService.createTodo(request);
     }
 
-
     @PatchMapping ("/{todo_id}")
     public TodoResponseDto updateTodo(@PathVariable("todo_id") Long id, @Valid @RequestBody UpdateTodoRequest request) {
         return todoService.updateTodo(id, request);
+    }
+
+    @DeleteMapping("{todo_id}")
+    public TodoResponseDto deleteTodo(@PathVariable("todo_id") Long id) {
+        return todoService.deleteTodo(id);
     }
 
 
