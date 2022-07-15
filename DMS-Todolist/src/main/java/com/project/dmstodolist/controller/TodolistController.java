@@ -1,7 +1,8 @@
 package com.project.dmstodolist.controller;
 
+import com.project.dmstodolist.dto.request.UpdateTodoRequest;
 import com.project.dmstodolist.dto.request.CreateTodoRequestDto;
-import com.project.dmstodolist.dto.response.CreateTodoResponseDto;
+import com.project.dmstodolist.dto.response.TodoResponseDto;
 import com.project.dmstodolist.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,17 +19,18 @@ public class TodolistController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateTodoResponseDto createTodolist(@Valid @RequestBody CreateTodoRequestDto createTodoRequestDto) {
-        return todoService.createTodo(createTodoRequestDto);
+    public TodoResponseDto createTodo(@Valid @RequestBody CreateTodoRequestDto request) {
+        return todoService.createTodo(request);
     }
 
-/*
-    @PutMapping ("/search/{id}")
-    public void getTodoList(@PathVariable Long id, ) {
 
+    @PatchMapping ("/{todo_id}")
+    public TodoResponseDto updateTodo(@PathVariable("todo_id") Long id, @Valid @RequestBody UpdateTodoRequest request) {
+        return todoService.updateTodo(id, request);
     }
 
- */
+
+
 
 
 

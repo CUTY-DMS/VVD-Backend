@@ -24,14 +24,14 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse signup(@Valid @RequestBody UserSignUpDto userSignUpDto) {
-        return userService.join(userSignUpDto);
+    public UserResponse signup(@Valid @RequestBody UserSignUpDto request) {
+        return userService.join(request);
     }
 
 
     @PostMapping("/signin")
-    public TokenResponse login(@Valid @RequestBody UserSignInDto userSignInDto) {
-        return userService.login(userSignInDto);
+    public TokenResponse login(@Valid @RequestBody UserSignInDto request) {
+        return userService.login(request);
     }
 
 }

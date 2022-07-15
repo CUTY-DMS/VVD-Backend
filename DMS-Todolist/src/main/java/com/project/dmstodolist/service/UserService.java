@@ -27,20 +27,20 @@ public class UserService {
 
 
     @Transactional
-    public UserResponse join(UserSignUpDto userSignUpDto) {
-        if(userRepository.existsByAccountId(userSignUpDto.getAccountId())) {
+    public UserResponse join(UserSignUpDto request) {
+        if(userRepository.existsByAccountId(request.getAccountId())) {
             throw new USER_ALREADY_EXISTSException();
         }
         userRepository.save(User.builder()
-                .accountId(userSignUpDto.getAccountId())
-                .password(passwordEncoder.encode(userSignUpDto.getPassword()))
-                .name(userSignUpDto.getName())
-                .age(userSignUpDto.getAge())
+                .accountId(request.getAccountId())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .name(request.getName())
+                .age(request.getAge())
                 .role(Role.ROLE_USER)
                 .build());
 
         return UserResponse.builder()
-                .message(userSignUpDto.getName() + "님 회원가입 성공")
+                .message(request.getName() + "님 회원가입 성공")
                 .build();
     }
 
