@@ -4,7 +4,7 @@ import com.project.dmstodolist.error.exception.BusinessException;
 import com.project.dmstodolist.error.ErrorCode;
 
 public class BadRequestException extends BusinessException {
-    public  BadRequestException() {
+    public BadRequestException() {
         super(ErrorCode.Bad_Request);
     }
 }
