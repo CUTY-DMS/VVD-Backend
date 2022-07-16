@@ -1,19 +1,17 @@
 package com.project.dmstodolist.entity.todolist;
 
 import com.project.dmstodolist.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
 public class Todo {
 
     @Id
@@ -34,4 +32,7 @@ public class Todo {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public boolean isCompleted() {
+        return true;
+    }
 }

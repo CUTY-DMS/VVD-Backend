@@ -3,7 +3,6 @@ package com.project.dmstodolist.service;
 import com.project.dmstodolist.dto.request.UpdateTodoRequest;
 import com.project.dmstodolist.entity.todolist.Todo;
 import com.project.dmstodolist.entity.todolist.TodoRepository;
-import com.project.dmstodolist.entity.user.UserRepository;
 import com.project.dmstodolist.dto.request.CreateTodoRequestDto;
 import com.project.dmstodolist.dto.response.TodoResponseDto;
 import com.project.dmstodolist.exception.ForbiddenException;
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
 public class TodoService {
 
     private final TodoRepository todoRepository;
-    private final UserRepository userRepository;
+    private final UserFacade userFacade;
 
 
     @Transactional
@@ -30,7 +29,8 @@ public class TodoService {
                 .title(request.getTitle())
                 .content(request.getContent())
                 .dateTime(LocalDateTime.now())
-                .user(UserFacade.getUser())
+                .completed(false)
+                .user(userFacade.getUser())
                 .build());
 
         return TodoResponseDto.builder()
@@ -45,7 +45,7 @@ public class TodoService {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
 
-        if(todo.getUser() != UserFacade.getUser()) {
+        if(todo.getUser() != userFacade.getUser()) {
             throw new ForbiddenException();
         }
 
@@ -60,12 +60,14 @@ public class TodoService {
                 .build();
     }
 
+
+    @Transactional
     public TodoResponseDto deleteTodo(Long id) {
 
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
 
-        if(todo.getUser() != UserFacade.getUser()) {
+        if(todo.getUser() != userFacade.getUser()) {
             throw new ForbiddenException();
         }
 
@@ -77,9 +79,25 @@ public class TodoService {
     }
 
 
+    @Transactional
+    public String checkTodo(Long id) {
 
+        Todo todo = todoRepository.findById(id)
+                .orElseThrow(TodoListNotFoundException::new);
 
+        if(todo.getUser() != userFacade.getUser()) {
+            throw new ForbiddenException();
+        }
 
+        if(todo.isCompleted()) {
+            todo.setCompleted(true);
+        }else {
+            return "already check";
+        }
+
+        todoRepository.save(todo);
+        return "success check";
+    }
 
 
 }

@@ -3,10 +3,12 @@ package com.project.dmstodolist.facade;
 import com.project.dmstodolist.entity.user.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserFacade {
 
-    public static User getUser() {
+    public User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(authentication == null || authentication.getPrincipal() == null
