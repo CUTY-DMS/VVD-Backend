@@ -9,6 +9,7 @@ import lombok.Getter;
 public enum ErrorCode {
 
     Bad_Request(400, "Bad Request"),
+    TOKEN_INVALID(401, "Token Invalid"),
     INVALID_PASSWORD(401, "Invalid Password"),
     FORBIDDEN(403,"Forbidden"),
     USER_NOT_FOUND(404, "User Not Found"),
