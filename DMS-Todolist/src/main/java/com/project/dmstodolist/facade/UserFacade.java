@@ -22,7 +22,7 @@ public class UserFacade {
         if(!(detail instanceof UserDetails)) {
             throw new TokenInvalidException();
         }
-        System.out.println(((UserDetails) detail).getUsername());
+
         return userRepository.findByAccountId(((UserDetails) detail).getUsername())
                 .orElseThrow(UserNotFoundException::new);
     }
