@@ -4,9 +4,7 @@ import com.project.dmstodolist.entity.user.User;
 import com.project.dmstodolist.entity.user.UserRepository;
 import com.project.dmstodolist.exception.TokenInvalidException;
 import com.project.dmstodolist.exception.UserNotFoundException;
-import com.project.dmstodolist.security.auth.AuthDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -24,7 +22,7 @@ public class UserFacade {
         if(!(detail instanceof UserDetails)) {
             throw new TokenInvalidException();
         }
-
+        System.out.println(((UserDetails) detail).getUsername());
         return userRepository.findByAccountId(((UserDetails) detail).getUsername())
                 .orElseThrow(UserNotFoundException::new);
     }
