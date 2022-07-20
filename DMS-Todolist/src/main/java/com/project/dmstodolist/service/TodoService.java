@@ -1,10 +1,14 @@
 package com.project.dmstodolist.service;
 
 import com.project.dmstodolist.dto.request.UpdateTodoRequest;
+import com.project.dmstodolist.dto.response.MyPageResponse;
+import com.project.dmstodolist.dto.response.TodoDetailResponse;
 import com.project.dmstodolist.entity.todolist.Todo;
 import com.project.dmstodolist.entity.todolist.TodoRepository;
 import com.project.dmstodolist.dto.request.CreateTodoRequestDto;
 import com.project.dmstodolist.dto.response.TodoResponse;
+import com.project.dmstodolist.entity.user.User;
+import com.project.dmstodolist.entity.user.UserRepository;
 import com.project.dmstodolist.exception.ForbiddenException;
 import com.project.dmstodolist.exception.TodoListNotFoundException;
 import com.project.dmstodolist.facade.UserFacade;
@@ -20,6 +24,7 @@ import java.util.List;
 public class TodoService {
 
     private final TodoRepository todoRepository;
+    private final UserRepository userRepository;
     private final UserFacade userFacade;
 
 
@@ -92,26 +97,10 @@ public class TodoService {
             throw new ForbiddenException();
         }
 
-        if(todo.isCompleted()) {
-            todo.setCompleted(true);
-        }else {
-            return "already check";
-        }
+        todo.setCompleted(!todo.isCompleted());
 
         todoRepository.save(todo);
         return "success check";
     }
-
-/*
-    public String getTodo() {
-
-        List<Todo> todoList = todoRepository.findAll();
-
-
-
-   }
-
- */
-
 
 }
