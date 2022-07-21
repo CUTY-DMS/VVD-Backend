@@ -11,7 +11,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class TokenResponse {
 
-    private String message;
-
     private String accessToken;
+
 }

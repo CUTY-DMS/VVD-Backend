@@ -1,12 +1,10 @@
 package com.project.dmstodolist.service;
 
 import com.project.dmstodolist.dto.request.UpdateTodoRequest;
-import com.project.dmstodolist.dto.response.MyPageResponse;
-import com.project.dmstodolist.dto.response.TodoDetailResponse;
+import com.project.dmstodolist.dto.response.*;
 import com.project.dmstodolist.entity.todolist.Todo;
 import com.project.dmstodolist.entity.todolist.TodoRepository;
 import com.project.dmstodolist.dto.request.CreateTodoRequestDto;
-import com.project.dmstodolist.dto.response.TodoResponse;
 import com.project.dmstodolist.entity.user.User;
 import com.project.dmstodolist.entity.user.UserRepository;
 import com.project.dmstodolist.exception.ForbiddenException;
@@ -17,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -102,5 +102,33 @@ public class TodoService {
         todoRepository.save(todo);
         return "success check";
     }
+
+
+
+
+
+
+
+
+    public TodoDetailResponse getTodo(Long id) {
+
+        Todo todo = todoRepository.findById(id)
+                .orElseThrow(TodoListNotFoundException::new);
+
+        return TodoDetailResponse.builder()
+                .title(todo.getTitle())
+                .content(todo.getContent())
+                .name(todo.getUser().getName())
+                .dateTime(todo.getDateTime())
+                .completed(todo.isCompleted())
+                .likes(todo.getLikes())
+                .build();
+    }
+
+
+
+
+
+
 
 }

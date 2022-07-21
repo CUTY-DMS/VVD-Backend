@@ -1,13 +1,16 @@
 package com.project.dmstodolist.dto.response;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
 @AllArgsConstructor
-public class UserResponse {
+@NoArgsConstructor
+@Builder
+public class TodoResponse {
 
     private String message;
 
