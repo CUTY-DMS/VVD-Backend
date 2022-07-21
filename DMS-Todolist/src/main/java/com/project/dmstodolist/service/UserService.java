@@ -56,7 +56,6 @@ public class UserService {
         String accessToken = jwtTokenProvider.createToken(user.getAccountId());
 
         return TokenResponse.builder()
-                .message("로그인 성공")
                 .accessToken(accessToken)
                 .build();
     }

@@ -104,10 +104,27 @@ public class TodoService {
     }
 
 
+    public MyPageResponse getMyTodo() {
+
+        User user = userFacade.getUser();
+
+        List<TodoDetailResponse> todos = user.getTodos()
+                .stream().map(todo -> TodoDetailResponse.builder()
+                        .title(todo.getTitle())
+                        .content(todo.getContent())
+                        .name(user.getName())
+                        .dateTime(todo.getDateTime())
+                        .completed(todo.isCompleted())
+                        .build())
+                .collect(Collectors.toList());
 
 
-
-
+        return MyPageResponse.builder()
+                .name(user.getName())
+                .age(user.getAge())
+                .myTodos(todos)
+                .build();
+    }
 
 
     public TodoDetailResponse getTodo(Long id) {
@@ -124,6 +141,9 @@ public class TodoService {
                 .likes(todo.getLikes())
                 .build();
     }
+
+
+
 
 
 

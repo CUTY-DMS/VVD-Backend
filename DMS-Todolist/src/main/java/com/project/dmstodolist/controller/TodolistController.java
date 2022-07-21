@@ -42,6 +42,10 @@ public class TodolistController {
         return todoService.checkTodo(id);
     }
 
+    @GetMapping("/mypage")
+    public MyPageResponse getMyTodo() {
+        return todoService.getMyTodo();
+    }
 
 
 
@@ -50,6 +54,8 @@ public class TodolistController {
     public TodoDetailResponse getTodo(@PathVariable(name = "todo_id") Long id) {
         return todoService.getTodo(id);
     }
+
+
 
 
 
