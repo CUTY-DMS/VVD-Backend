@@ -171,6 +171,19 @@ public class TodoService {
 
     }
 
+    @Transactional
+    public LikeResponse removeLike(Long id) {
 
+        User user = userFacade.getUser();
+
+        likeRepository.deleteByUserAndTodo(
+                user, todoRepository.findById(id)
+                        .orElseThrow(TodoListNotFoundException::new));
+
+        return LikeResponse.builder()
+                .liked(false)
+                .build();
+
+    }
 
 }
