@@ -122,6 +122,7 @@ public class TodoService {
                         .name(user.getName())
                         .dateTime(todo.getDateTime())
                         .completed(todo.isCompleted())
+                        .isLiked(checkLiked(todo.getId()))
                         .build())
                 .collect(Collectors.toList());
 
@@ -132,8 +133,11 @@ public class TodoService {
                 .build();
     }
 
+
     @Transactional(readOnly = true)
     public TodoDetailResponse getTodo(Long id) {
+
+        User user = userFacade.getUser();
 
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
@@ -144,10 +148,12 @@ public class TodoService {
                 .name(todo.getUser().getAccountId())
                 .dateTime(todo.getDateTime())
                 .completed(todo.isCompleted())
+                .isLiked(checkLiked(id))
                 .build();
     }
 
 
+    
 
 
     @Transactional
@@ -159,10 +165,9 @@ public class TodoService {
             throw new LikeAlreadyExistsException();
         }
 
-        likeRepository.save(
-                Like.builder()
-                        .user(user)
-                        .todo(todoRepository.findById(id).orElseThrow(TodoListNotFoundException::new))
+        likeRepository.save(Like.builder()
+                .user(user)
+                .todo(todoRepository.findById(id).orElseThrow(TodoListNotFoundException::new))
                 .build());
 
         return LikeResponse.builder()
@@ -170,6 +175,7 @@ public class TodoService {
                 .build();
 
     }
+
 
     @Transactional
     public LikeResponse removeLike(Long id) {
@@ -184,6 +190,14 @@ public class TodoService {
                 .liked(false)
                 .build();
 
+    }
+
+
+    public boolean checkLiked(Long id) {
+
+        User user = userFacade.getUser();
+
+        return likeRepository.findByUserIdAndTodoId(user.getId(), id).isPresent();
     }
 
 }
