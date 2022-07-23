@@ -1,5 +1,8 @@
 package com.project.dmstodolist.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.dmstodolist.entity.like.Like;
 import com.project.dmstodolist.entity.todolist.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +40,12 @@ public class User{
     private Role role;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Todo> todos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Like> likes = new ArrayList<>();
 
 }
 

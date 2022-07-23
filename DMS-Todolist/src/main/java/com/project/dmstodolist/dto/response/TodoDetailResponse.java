@@ -23,6 +23,4 @@ public class TodoDetailResponse {
 
     private boolean completed;
 
-   private int likes;
-
 }

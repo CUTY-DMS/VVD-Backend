@@ -8,7 +8,7 @@ import com.project.dmstodolist.entity.user.UserRepository;
 import com.project.dmstodolist.dto.request.UserSignUpDto;
 import com.project.dmstodolist.dto.response.UserResponse;
 import com.project.dmstodolist.exception.InvalidPasswordException;
-import com.project.dmstodolist.exception.USER_ALREADY_EXISTSException;
+import com.project.dmstodolist.exception.UserAlreadyExistsException;
 import com.project.dmstodolist.exception.UserNotFoundException;
 import com.project.dmstodolist.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class UserService {
     @Transactional
     public UserResponse join(UserSignUpDto request) {
         if(userRepository.existsByAccountId(request.getAccountId())) {
-            throw new USER_ALREADY_EXISTSException();
+            throw new UserAlreadyExistsException();
         }
         userRepository.save(User.builder()
                 .accountId(request.getAccountId())

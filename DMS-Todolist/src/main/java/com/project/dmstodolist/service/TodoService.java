@@ -2,20 +2,22 @@ package com.project.dmstodolist.service;
 
 import com.project.dmstodolist.dto.request.UpdateTodoRequest;
 import com.project.dmstodolist.dto.response.*;
+import com.project.dmstodolist.entity.like.Like;
+import com.project.dmstodolist.entity.like.LikeRepository;
 import com.project.dmstodolist.entity.todolist.Todo;
 import com.project.dmstodolist.entity.todolist.TodoRepository;
 import com.project.dmstodolist.dto.request.CreateTodoRequestDto;
 import com.project.dmstodolist.entity.user.User;
 import com.project.dmstodolist.entity.user.UserRepository;
 import com.project.dmstodolist.exception.ForbiddenException;
+import com.project.dmstodolist.exception.LikeAlreadyExistsException;
 import com.project.dmstodolist.exception.TodoListNotFoundException;
 import com.project.dmstodolist.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,22 +27,24 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
     private final UserFacade userFacade;
 
 
     @Transactional
     public TodoResponse createTodo(CreateTodoRequestDto request) {
 
+        User user = userFacade.getUser();
+
         todoRepository.save(Todo.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .dateTime(LocalDateTime.now())
                 .completed(false)
-                .user(userFacade.getUser())
+                .user(user)
                 .build());
 
-
-       return TodoResponse.builder()
+        return TodoResponse.builder()
                 .message("TodoList : " + request.getTitle() + "을(를) 등록했습니다.")
                 .build();
     }
@@ -88,7 +92,7 @@ public class TodoService {
 
 
     @Transactional
-    public String checkTodo(Long id) {
+    public TodoCheckResponse checkTodo(Long id) {
 
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
@@ -100,10 +104,13 @@ public class TodoService {
         todo.setCompleted(!todo.isCompleted());
 
         todoRepository.save(todo);
-        return "success check";
+
+        return TodoCheckResponse.builder()
+                .checked(todo.isCompleted())
+                .build();
     }
 
-
+    @Transactional(readOnly = true)
     public MyPageResponse getMyTodo() {
 
         User user = userFacade.getUser();
@@ -118,7 +125,6 @@ public class TodoService {
                         .build())
                 .collect(Collectors.toList());
 
-
         return MyPageResponse.builder()
                 .name(user.getName())
                 .age(user.getAge())
@@ -126,7 +132,7 @@ public class TodoService {
                 .build();
     }
 
-
+    @Transactional(readOnly = true)
     public TodoDetailResponse getTodo(Long id) {
 
         Todo todo = todoRepository.findById(id)
@@ -135,19 +141,35 @@ public class TodoService {
         return TodoDetailResponse.builder()
                 .title(todo.getTitle())
                 .content(todo.getContent())
-                .name(todo.getUser().getName())
+                .name(todo.getUser().getAccountId())
                 .dateTime(todo.getDateTime())
                 .completed(todo.isCompleted())
-                .likes(todo.getLikes())
                 .build();
     }
 
 
 
 
+    @Transactional
+    public LikeResponse addLike(Long id) {
 
+        User user = userFacade.getUser();
 
+        if(likeRepository.findByUserIdAndTodoId(user.getId(), id).isPresent()) {
+            throw new LikeAlreadyExistsException();
+        }
 
+        likeRepository.save(
+                Like.builder()
+                        .user(user)
+                        .todo(todoRepository.findById(id).orElseThrow(TodoListNotFoundException::new))
+                .build());
+
+        return LikeResponse.builder()
+                .liked(true)
+                .build();
+
+    }
 
 
 

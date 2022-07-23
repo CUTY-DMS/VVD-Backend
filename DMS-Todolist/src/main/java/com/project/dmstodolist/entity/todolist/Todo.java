@@ -1,13 +1,18 @@
 package com.project.dmstodolist.entity.todolist;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.dmstodolist.entity.like.Like;
 import com.project.dmstodolist.entity.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
-@Setter
+@Getter @Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,7 +37,7 @@ public class Todo {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public boolean isCompleted() {
-        return true;
-    }
+    @OneToMany(mappedBy = "todo")
+    private List<Like> likes;
+
 }
