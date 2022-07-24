@@ -40,11 +40,9 @@ public class User{
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<Todo> todos = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<Like> likes = new ArrayList<>();
 
 }

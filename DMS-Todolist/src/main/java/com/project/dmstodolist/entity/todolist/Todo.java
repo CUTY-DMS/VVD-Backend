@@ -1,5 +1,6 @@
 package com.project.dmstodolist.entity.todolist;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.dmstodolist.entity.like.Like;
 import com.project.dmstodolist.entity.user.User;
@@ -37,7 +38,7 @@ public class Todo {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "todo")
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.REMOVE)
     private List<Like> likes;
 
 }

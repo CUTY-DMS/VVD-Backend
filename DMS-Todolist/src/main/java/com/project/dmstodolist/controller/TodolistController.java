@@ -49,5 +49,11 @@ public class TodolistController {
         return todoService.getTodo(id);
     }
 
+    @GetMapping("/list")
+    public List<AllTodoResponse> getAllTodo() {
+        return todoService.getAllTodo();
+    }
+
+
 
 }

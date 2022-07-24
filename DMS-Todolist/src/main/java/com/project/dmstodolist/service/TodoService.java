@@ -8,7 +8,6 @@ import com.project.dmstodolist.entity.todolist.Todo;
 import com.project.dmstodolist.entity.todolist.TodoRepository;
 import com.project.dmstodolist.dto.request.CreateTodoRequestDto;
 import com.project.dmstodolist.entity.user.User;
-import com.project.dmstodolist.entity.user.UserRepository;
 import com.project.dmstodolist.exception.ForbiddenException;
 import com.project.dmstodolist.exception.LikeAlreadyExistsException;
 import com.project.dmstodolist.exception.TodoListNotFoundException;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 public class TodoService {
 
     private final TodoRepository todoRepository;
-    private final UserRepository userRepository;
     private final LikeRepository likeRepository;
     private final UserFacade userFacade;
 
@@ -153,7 +151,22 @@ public class TodoService {
     }
 
 
-    
+    @Transactional(readOnly = true)
+    public List<AllTodoResponse> getAllTodo() {
+
+        User user = userFacade.getUser();
+
+        return todoRepository.findAll()
+                .stream().map(todo -> {
+                    return AllTodoResponse.builder()
+                            .title(todo.getTitle())
+                            .dateTime(todo.getDateTime())
+                            .liked(checkLiked(todo.getId()))
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+    }
 
 
     @Transactional
@@ -171,7 +184,7 @@ public class TodoService {
                 .build());
 
         return LikeResponse.builder()
-                .liked(true)
+                .isLiked(true)
                 .build();
 
     }
@@ -187,7 +200,7 @@ public class TodoService {
                         .orElseThrow(TodoListNotFoundException::new));
 
         return LikeResponse.builder()
-                .liked(false)
+                .isLiked(false)
                 .build();
 
     }
