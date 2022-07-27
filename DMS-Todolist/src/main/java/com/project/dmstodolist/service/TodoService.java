@@ -54,15 +54,13 @@ public class TodoService {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
 
-        if(todo.getUser() != userFacade.getUser()) {
-            throw new ForbiddenException();
-        }
+        User user = userFacade.getUser();
 
         todoRepository.save(Todo.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .dateTime(LocalDateTime.now())
-                .user(userFacade.getUser())
+                .user(user)
                 .build());
 
         return TodoResponse.builder()
@@ -77,10 +75,6 @@ public class TodoService {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
 
-        if(todo.getUser() != userFacade.getUser()) {
-            throw new ForbiddenException();
-        }
-
         todoRepository.delete(todo);
 
         return TodoResponse.builder()
@@ -94,10 +88,6 @@ public class TodoService {
 
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
-
-        if(todo.getUser() != userFacade.getUser()) {
-            throw new ForbiddenException();
-        }
 
         todo.setCompleted(!todo.isCompleted());
 
@@ -184,7 +174,7 @@ public class TodoService {
                 .build());
 
         return LikeResponse.builder()
-                .isLiked(true)
+                .liked(true)
                 .build();
 
     }
@@ -200,7 +190,7 @@ public class TodoService {
                         .orElseThrow(TodoListNotFoundException::new));
 
         return LikeResponse.builder()
-                .isLiked(false)
+                .liked(false)
                 .build();
 
     }
