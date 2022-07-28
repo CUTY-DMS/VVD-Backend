@@ -6,18 +6,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@RequestMapping("/todolist")
+@RequestMapping("/todolist/like")
 @RestController
 public class LikeController {
 
     private final TodoService todoService;
 
-    @PostMapping ("/like/{todo_id}")
+    @PostMapping ("/{todo_id}")
     public LikeResponse addLike(@PathVariable(name = "todo_id") Long id) {
         return todoService.addLike(id);
     }
 
-    @DeleteMapping("like/{todo_id}")
+    @DeleteMapping("/{todo_id}")
     public LikeResponse removeLike(@PathVariable(name = "todo_id") Long id) {
         return todoService.removeLike(id);
     }

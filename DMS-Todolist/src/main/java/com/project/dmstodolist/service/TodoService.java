@@ -54,13 +54,12 @@ public class TodoService {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
 
-        User user = userFacade.getUser();
+        checkUser(todo);
 
         todoRepository.save(Todo.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .dateTime(LocalDateTime.now())
-                .user(user)
                 .build());
 
         return TodoResponse.builder()
@@ -74,6 +73,8 @@ public class TodoService {
 
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
+
+        checkUser(todo);
 
         todoRepository.delete(todo);
 
@@ -89,6 +90,8 @@ public class TodoService {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
 
+        checkUser(todo);
+
         todo.setCompleted(!todo.isCompleted());
 
         todoRepository.save(todo);
@@ -97,6 +100,16 @@ public class TodoService {
                 .checked(todo.isCompleted())
                 .build();
     }
+
+
+    private void checkUser(Todo todo) {
+        User user = userFacade.getUser();
+
+        if(!todo.getUser().getAccountId().equals(user.getAccountId())) {
+            throw new ForbiddenException();
+        }
+    }
+
 
     @Transactional(readOnly = true)
     public MyPageResponse getMyTodo() {
@@ -107,7 +120,7 @@ public class TodoService {
                 .stream().map(todo -> TodoDetailResponse.builder()
                         .title(todo.getTitle())
                         .content(todo.getContent())
-                        .name(user.getName())
+                        .name(todo.getUser().getName())
                         .dateTime(todo.getDateTime())
                         .completed(todo.isCompleted())
                         .isLiked(checkLiked(todo.getId()))
@@ -125,15 +138,13 @@ public class TodoService {
     @Transactional(readOnly = true)
     public TodoDetailResponse getTodo(Long id) {
 
-        User user = userFacade.getUser();
-
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
 
         return TodoDetailResponse.builder()
                 .title(todo.getTitle())
                 .content(todo.getContent())
-                .name(todo.getUser().getAccountId())
+                .name(todo.getUser().getName())
                 .dateTime(todo.getDateTime())
                 .completed(todo.isCompleted())
                 .isLiked(checkLiked(id))
@@ -143,8 +154,6 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public List<AllTodoResponse> getAllTodo() {
-
-        User user = userFacade.getUser();
 
         return todoRepository.findAll()
                 .stream().map(todo -> {
