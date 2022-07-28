@@ -2,8 +2,9 @@ package com.project.dmstodolist.facade;
 
 import com.project.dmstodolist.entity.user.User;
 import com.project.dmstodolist.entity.user.UserRepository;
-import com.project.dmstodolist.exception.TokenInvalidException;
+import com.project.dmstodolist.exception.AuthenticationNotFoundException;
 import com.project.dmstodolist.exception.UserNotFoundException;
+import com.project.dmstodolist.security.auth.AuthDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,13 +18,13 @@ public class UserFacade {
 
     public User getUser() {
 
-        Object detail = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if(!(detail instanceof UserDetails)) {
-            throw new TokenInvalidException();
+        if(!(principal instanceof UserDetails)) {
+            throw new AuthenticationNotFoundException();
         }
 
-        return userRepository.findByAccountId(((UserDetails) detail).getUsername())
-                .orElseThrow(UserNotFoundException::new);
+        return ((AuthDetails)principal).getUser();
     }
+    
 }
