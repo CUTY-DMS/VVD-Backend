@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class UserResponse {
+public class MessageResponse {
 
     private String message;
 

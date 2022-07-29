@@ -3,7 +3,7 @@ package com.project.dmstodolist.controller;
 import com.project.dmstodolist.dto.request.UserSignInDto;
 import com.project.dmstodolist.dto.request.UserSignUpDto;
 import com.project.dmstodolist.dto.response.TokenResponse;
-import com.project.dmstodolist.dto.response.UserResponse;
+import com.project.dmstodolist.dto.response.MessageResponse;
 import com.project.dmstodolist.security.JwtTokenProvider;
 import com.project.dmstodolist.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse signup(@Valid @RequestBody UserSignUpDto request) {
+    public MessageResponse signup(@Valid @RequestBody UserSignUpDto request) {
         return userService.join(request);
     }
 

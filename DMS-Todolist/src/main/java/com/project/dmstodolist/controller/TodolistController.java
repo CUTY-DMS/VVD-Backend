@@ -20,17 +20,17 @@ public class TodolistController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public TodoResponse createTodo(@Valid @RequestBody CreateTodoRequestDto request) {
+    public MessageResponse createTodo(@Valid @RequestBody CreateTodoRequestDto request) {
         return todoService.createTodo(request);
     }
 
     @PatchMapping ("/{todo_id}")
-    public TodoResponse updateTodo(@PathVariable(name = "todo_id") Long id, @Valid @RequestBody UpdateTodoRequest request) {
+    public MessageResponse updateTodo(@PathVariable(name = "todo_id") Long id, @Valid @RequestBody UpdateTodoRequest request) {
         return todoService.updateTodo(id, request);
     }
 
     @DeleteMapping("{todo_id}")
-    public TodoResponse deleteTodo(@PathVariable(name = "todo_id") Long id) {
+    public MessageResponse deleteTodo(@PathVariable(name = "todo_id") Long id) {
         return todoService.deleteTodo(id);
     }
 

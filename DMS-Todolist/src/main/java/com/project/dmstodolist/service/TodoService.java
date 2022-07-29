@@ -30,7 +30,7 @@ public class TodoService {
 
 
     @Transactional
-    public TodoResponse createTodo(CreateTodoRequestDto request) {
+    public MessageResponse createTodo(CreateTodoRequestDto request) {
 
         User user = userFacade.getUser();
 
@@ -42,14 +42,14 @@ public class TodoService {
                 .user(user)
                 .build());
 
-        return TodoResponse.builder()
+        return MessageResponse.builder()
                 .message("TodoList : " + request.getTitle() + "을(를) 등록했습니다.")
                 .build();
     }
 
 
     @Transactional
-    public TodoResponse updateTodo(Long id, UpdateTodoRequest request) {
+    public MessageResponse updateTodo(Long id, UpdateTodoRequest request) {
 
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
@@ -59,14 +59,14 @@ public class TodoService {
        todo.update(request.getTitle(), request.getContent());
        todoRepository.save(todo);
 
-        return TodoResponse.builder()
+        return MessageResponse.builder()
                 .message("TodoList : " + request.getTitle() + "을(를) 수정했습니다.")
                 .build();
     }
 
 
     @Transactional
-    public TodoResponse deleteTodo(Long id) {
+    public MessageResponse deleteTodo(Long id) {
 
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
@@ -75,7 +75,7 @@ public class TodoService {
 
         todoRepository.delete(todo);
 
-        return TodoResponse.builder()
+        return MessageResponse.builder()
                 .message("TodoList : " + todo.getTitle() + "을(를) 삭제했습니다.")
                 .build();
     }
@@ -115,6 +115,7 @@ public class TodoService {
 
         List<TodoDetailResponse> todos = user.getTodos()
                 .stream().map(todo -> TodoDetailResponse.builder()
+                        .todoId(todo.getId())
                         .title(todo.getTitle())
                         .content(todo.getContent())
                         .name(todo.getUser().getName())
