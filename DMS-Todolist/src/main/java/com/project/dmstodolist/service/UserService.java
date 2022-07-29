@@ -6,7 +6,7 @@ import com.project.dmstodolist.dto.response.TokenResponse;
 import com.project.dmstodolist.entity.user.User;
 import com.project.dmstodolist.entity.user.UserRepository;
 import com.project.dmstodolist.dto.request.UserSignUpDto;
-import com.project.dmstodolist.dto.response.UserResponse;
+import com.project.dmstodolist.dto.response.MessageResponse;
 import com.project.dmstodolist.exception.InvalidPasswordException;
 import com.project.dmstodolist.exception.UserAlreadyExistsException;
 import com.project.dmstodolist.exception.UserNotFoundException;
@@ -27,7 +27,7 @@ public class UserService {
 
 
     @Transactional
-    public UserResponse join(UserSignUpDto request) {
+    public MessageResponse join(UserSignUpDto request) {
         if(userRepository.existsByAccountId(request.getAccountId())) {
             throw new UserAlreadyExistsException();
         }
@@ -39,7 +39,7 @@ public class UserService {
                 .role(Role.ROLE_USER)
                 .build());
 
-        return UserResponse.builder()
+        return MessageResponse.builder()
                 .message(request.getName() + "님 회원가입 성공")
                 .build();
     }

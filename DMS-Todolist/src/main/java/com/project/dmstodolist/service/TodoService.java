@@ -118,15 +118,15 @@ public class TodoService {
                         .todoId(todo.getId())
                         .title(todo.getTitle())
                         .content(todo.getContent())
-                        .name(todo.getUser().getName())
+                        .name(todo.getUser().getAccountId())
                         .dateTime(todo.getDateTime())
                         .completed(todo.isCompleted())
-                        .isLiked(checkLiked(todo.getId()))
+                        .liked(checkLiked(todo.getId()))
                         .build())
                 .collect(Collectors.toList());
 
         return MyPageResponse.builder()
-                .name(user.getName())
+                .name(user.getAccountId())
                 .age(user.getAge())
                 .myTodos(todos)
                 .build();
@@ -134,18 +134,18 @@ public class TodoService {
 
 
     @Transactional(readOnly = true)
-    public TodoDetailResponse getTodo(Long id) {
+    public TodoResponse getTodo(Long id) {
 
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoListNotFoundException::new);
 
-        return TodoDetailResponse.builder()
+        return TodoResponse.builder()
                 .title(todo.getTitle())
                 .content(todo.getContent())
-                .name(todo.getUser().getName())
+                .name(todo.getUser().getAccountId())
                 .dateTime(todo.getDateTime())
                 .completed(todo.isCompleted())
-                .isLiked(checkLiked(id))
+                .liked(checkLiked(id))
                 .build();
     }
 
@@ -156,9 +156,10 @@ public class TodoService {
         return todoRepository.findAll()
                 .stream().map(todo -> {
                     return AllTodoResponse.builder()
+                            .todoId(todo.getId())
                             .title(todo.getTitle())
                             .dateTime(todo.getDateTime())
-                            .liked(checkLiked(todo.getId()))
+                            .userName(todo.getUser().getAccountId())
                             .build();
                 })
                 .collect(Collectors.toList());

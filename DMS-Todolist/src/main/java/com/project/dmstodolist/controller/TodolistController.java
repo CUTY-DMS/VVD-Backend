@@ -45,7 +45,7 @@ public class TodolistController {
     }
 
     @GetMapping("/{todo_id}")
-    public TodoDetailResponse getTodo(@PathVariable(name = "todo_id") Long id) {
+    public TodoResponse getTodo(@PathVariable(name = "todo_id") Long id) {
         return todoService.getTodo(id);
     }
 
