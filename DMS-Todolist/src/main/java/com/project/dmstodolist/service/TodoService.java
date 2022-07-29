@@ -102,7 +102,7 @@ public class TodoService {
     private void checkUser(Todo todo) {
         User user = userFacade.getUser();
 
-        if(!todo.getUser().getAccountId().equals(user.getAccountId())) {
+        if(!todo.getUser().equals(user)) {
             throw new ForbiddenException();
         }
     }
