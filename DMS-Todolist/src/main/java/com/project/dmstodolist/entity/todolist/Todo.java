@@ -41,4 +41,10 @@ public class Todo {
     @OneToMany(mappedBy = "todo", cascade = CascadeType.REMOVE)
     private List<Like> likes;
 
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+        this.dateTime = LocalDateTime.now();
+    }
+
 }

@@ -56,11 +56,8 @@ public class TodoService {
 
         checkUser(todo);
 
-        todoRepository.save(Todo.builder()
-                .title(request.getTitle())
-                .content(request.getContent())
-                .dateTime(LocalDateTime.now())
-                .build());
+       todo.update(request.getTitle(), request.getContent());
+       todoRepository.save(todo);
 
         return TodoResponse.builder()
                 .message("TodoList : " + request.getTitle() + "을(를) 수정했습니다.")
