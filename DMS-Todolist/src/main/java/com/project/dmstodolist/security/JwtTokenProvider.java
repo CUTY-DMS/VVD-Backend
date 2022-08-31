@@ -1,5 +1,7 @@
 package com.project.dmstodolist.security;
 
+import com.project.dmstodolist.exception.ExpiredTokenException;
+import com.project.dmstodolist.exception.InvalidTokenException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,10 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -39,12 +39,8 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getTokenSubject(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    public String getUserPk(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public String resolveToken(HttpServletRequest request) {
@@ -53,14 +49,22 @@ public class JwtTokenProvider {
         return request.getHeader("Authorization");
     }
 
-    public boolean validateToken(String jwtToken) {
+    private Claims getBody(String token) {
         try {
-            Jws<Claims> claimsJwt = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            return !claimsJwt.getBody().getExpiration().before(new Date());
-        } catch(Exception e) {
-            return false;
+            return Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredTokenException();
+        } catch (Exception e) {
+            throw new InvalidTokenException();
         }
     }
+    private String getTokenSubject(String token) {
+        return getBody(token).getSubject();
+    }
+
 }
 
 
