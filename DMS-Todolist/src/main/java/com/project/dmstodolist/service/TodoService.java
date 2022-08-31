@@ -151,15 +151,18 @@ public class TodoService {
 
 
     @Transactional(readOnly = true)
-    public List<AllTodoResponse> getAllTodo() {
+    public List<TodoDetailResponse> getAllTodo() {
 
         return todoRepository.findAll()
                 .stream().map(todo -> {
-                    return AllTodoResponse.builder()
+                    return TodoDetailResponse.builder()
                             .todoId(todo.getId())
                             .title(todo.getTitle())
+                            .content(todo.getContent())
+                            .name(todo.getUser().getAccountId())
                             .dateTime(todo.getDateTime())
-                            .userName(todo.getUser().getAccountId())
+                            .completed(todo.isCompleted())
+                            .liked(checkLiked(todo.getId()))
                             .build();
                 })
                 .collect(Collectors.toList());

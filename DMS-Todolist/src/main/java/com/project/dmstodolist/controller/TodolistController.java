@@ -50,7 +50,7 @@ public class TodolistController {
     }
 
     @GetMapping("/list")
-    public List<AllTodoResponse> getAllTodo() {
+    public List<TodoDetailResponse> getAllTodo() {
         return todoService.getAllTodo();
     }
 
