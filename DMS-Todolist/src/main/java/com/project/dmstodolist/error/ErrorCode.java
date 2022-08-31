@@ -10,6 +10,8 @@ public enum ErrorCode {
 
     Bad_Request(400, "Bad Request"),
     INVALID_PASSWORD(401, "Invalid Password"),
+    EXPIRED_TOKEN(401, "Expired Token"),
+    INVALID_TOKEN(401, "Invalid Token"),
     FORBIDDEN(403,"Forbidden"),
     USER_NOT_FOUND(404, "User Not Found"),
     TODOLIST_NOT_FOUND(404, "TODOLIST_NOT_FOUND"),
