@@ -11,10 +11,6 @@ import java.util.List;
 @Builder
 public class MyPageResponse {
 
-    private String name;
-
-    private int age;
-
     private List<TodoDetailResponse> myTodos;
 
 }

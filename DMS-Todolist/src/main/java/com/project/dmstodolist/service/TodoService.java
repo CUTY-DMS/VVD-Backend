@@ -126,8 +126,6 @@ public class TodoService {
                 .collect(Collectors.toList());
 
         return MyPageResponse.builder()
-                .name(user.getAccountId())
-                .age(user.getAge())
                 .myTodos(todos)
                 .build();
     }
