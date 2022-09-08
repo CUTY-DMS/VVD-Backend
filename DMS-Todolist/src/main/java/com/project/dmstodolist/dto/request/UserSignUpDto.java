@@ -1,6 +1,5 @@
 package com.project.dmstodolist.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ public class UserSignUpDto {
 
     @NotNull
     @Size(max = 20, message = "아이디는 최대 20글자")
-    @JsonProperty("account_id")
     private String accountId;
 
     @NotNull
