@@ -4,7 +4,7 @@ import com.project.dmstodolist.dto.request.UserSignInDto;
 import com.project.dmstodolist.dto.request.UserSignUpDto;
 import com.project.dmstodolist.dto.response.TokenResponse;
 import com.project.dmstodolist.dto.response.MessageResponse;
-import com.project.dmstodolist.security.JwtTokenProvider;
+import com.project.dmstodolist.security.jwt.JwtTokenProvider;
 import com.project.dmstodolist.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

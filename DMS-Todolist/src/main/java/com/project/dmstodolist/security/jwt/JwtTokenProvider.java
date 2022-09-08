@@ -1,4 +1,4 @@
-package com.project.dmstodolist.security;
+package com.project.dmstodolist.security.jwt;
 
 import com.project.dmstodolist.exception.ExpiredTokenException;
 import com.project.dmstodolist.exception.InvalidTokenException;

@@ -10,7 +10,7 @@ import com.project.dmstodolist.dto.response.MessageResponse;
 import com.project.dmstodolist.exception.InvalidPasswordException;
 import com.project.dmstodolist.exception.UserAlreadyExistsException;
 import com.project.dmstodolist.exception.UserNotFoundException;
-import com.project.dmstodolist.security.JwtTokenProvider;
+import com.project.dmstodolist.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
