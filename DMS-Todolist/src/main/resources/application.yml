@@ -3,7 +3,6 @@ spring:
     hibernate:
       ddl-auto: update
     database: mysql
-    generate-ddl: true
     show-sql: true
 
   datasource:
@@ -12,8 +11,8 @@ spring:
     password: ${DB_PWD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-    jackson:
-      property-naming-strategy: SNAKE_CASE
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 
   redis:
     host: ${REDIS_HOST}
