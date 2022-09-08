@@ -53,12 +53,13 @@ public class UserService {
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword()))
             throw new InvalidPasswordException();
 
-        String accessToken = jwtTokenProvider.createToken(user.getAccountId());
+        String accessToken = jwtTokenProvider.generateAccessToken(user.getAccountId());
+        String refreshToken = jwtTokenProvider.generateRefreshToken(user.getAccountId());
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
-
 
 }
